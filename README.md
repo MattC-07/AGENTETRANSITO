@@ -79,4 +79,3 @@ dashboard-transito/
 ## 👤 Autor
 
 * **Mateo** — [@MattC-07](https://github.com/MattC-07)
-* **Curso:** Análisis y Diseño de Sistemas — UdeA
