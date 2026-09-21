@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* SIFCA institutional palette */
+  --color-sifca-navy:     #0D2247;
+  --color-sifca-blue:     #1A3A6B;
+  --color-sifca-mid:      #2558A8;
+  --color-sifca-light:    #D6E3F7;
+  --color-sifca-bg:       #EDF1F7;
+  --color-sifca-border:   #C2CEDE;
+  --color-sifca-text:     #0F1F3D;
+  --color-sifca-muted:    #5A7099;
+
+  --color-status-red:     #B91C1C;
+  --color-status-green:   #166534;
+  --color-status-amber:   #92400E;
+  --color-ok:             #15803D;
+  --color-danger:         #DC2626;
+  --color-warn:           #D97706;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-sifca-bg);
+  color: var(--color-sifca-text);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #C2CEDE; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #92A5BF; }
