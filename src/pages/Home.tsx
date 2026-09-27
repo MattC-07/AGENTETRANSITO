@@ -146,6 +146,20 @@ export default function Home() {
             </div>
           </button>
         </div>
+
+        {/* Admin access (discreto) */}
+        <button
+          onClick={() => navigate('/admin')}
+          className="mt-8 flex items-center gap-1.5 text-xs font-medium transition-colors"
+          style={{ color: '#5A7099' }}
+          onMouseEnter={e => (e.currentTarget.style.color = '#1A3A6B')}
+          onMouseLeave={e => (e.currentTarget.style.color = '#5A7099')}
+        >
+          <svg viewBox="0 0 16 16" className="w-3.5 h-3.5" fill="currentColor">
+            <path d="M8 1a2 2 0 012 2v4H6V3a2 2 0 012-2zm3 6V3a3 3 0 00-6 0v4a2 2 0 00-2 2v5a2 2 0 002 2h6a2 2 0 002-2V9a2 2 0 00-2-2z"/>
+          </svg>
+          Acceso administrativo
+        </button>
       </main>
 
       <footer

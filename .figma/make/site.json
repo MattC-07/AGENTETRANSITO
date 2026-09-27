@@ -1,4 +1,5 @@
 {
+  "title": "SIFCA",
   "description": "Streamlines traffic fine validation by providing agents with a clear dashboard to review, approve, discard, or correct infractions efficiently.",
   "robots": {
     "index": false
