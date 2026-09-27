@@ -81,16 +81,13 @@ export default function AgentDetail() {
           </div>
         )}
 
-        <div className="mb-6">
-          <EvidenceReplay />
-        </div>
-
         {/* Two-column layout */}
         <form onSubmit={handleApprove}>
           <div className="grid grid-cols-2 gap-6">
 
             {/* ── Left: Photo evidence ── */}
             <div className="space-y-4">
+              <EvidenceReplay />
 
               {/* Panoramic photo */}
               <div
@@ -168,6 +165,7 @@ export default function AgentDetail() {
                   </span>
                 </div>
               </div>
+
             </div>
 
             {/* ── Right: Data + action ── */}

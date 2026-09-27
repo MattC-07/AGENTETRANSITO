@@ -64,10 +64,6 @@ export default function CitizenResult() {
           </p>
         </div>
 
-        <div className="mb-6">
-          <EvidenceReplay />
-        </div>
-
         {/* Main comparendo card */}
         <div
           className="bg-white rounded-lg border overflow-hidden shadow-sm"
@@ -141,6 +137,10 @@ export default function CitizenResult() {
 
             {/* Right: photo + action */}
             <div className="px-6 py-5 flex flex-col">
+              <div className="mb-5">
+                <EvidenceReplay />
+              </div>
+
               <h3 className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: '#5A7099' }}>
                 Fotografía de la evidencia
               </h3>
