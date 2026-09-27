@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { SifcaHeader } from './Home';
+import EvidenceReplay from '../imports/EvidenceReplay';
 
 // ─── Screen 2.3 — Citizen Query Result ───────────────────────────────────────
 export default function CitizenResult() {
@@ -10,6 +11,9 @@ export default function CitizenResult() {
 
   const [showHiRes, setShowHiRes] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
+  const [showAppeal, setShowAppeal] = useState(false);
+  const [appealComment, setAppealComment] = useState('');
+  const [appealSubmitted, setAppealSubmitted] = useState(false);
 
   const comparendo = {
     numero: 'C-2026-00821',
@@ -28,6 +32,11 @@ export default function CitizenResult() {
     hiRes: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&h=600&fit=crop&auto=format',
   };
 
+  function handleAppealSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setAppealSubmitted(true);
+  }
+
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: '#EDF1F7' }}>
       <SifcaHeader />
@@ -45,7 +54,7 @@ export default function CitizenResult() {
               style={{ backgroundColor: '#DCFCE7', color: '#15803D', border: '1.5px solid #86EFAC' }}
             >
               <svg viewBox="0 0 12 12" className="w-3 h-3" fill="currentColor">
-                <path fillRule="evenodd" d="M10.03 2.97a.75.75 0 010 1.06L5 9.06 1.97 6.03a.75.75 0 011.06-1.06L5 6.94l4.97-4.97a.75.75 0 011.06 0z" clipRule="evenodd"/>
+                <path fillRule="evenodd" d="M10.03 2.97a.75.75 0 010 1.06L5 9.06 1.97 6.03a.75.75 0 011.06-1.06L5 6.94l4.97-4.97a.75.75 0 011.06 0z" clipRule="evenodd" />
               </svg>
               {comparendo.estado}
             </span>
@@ -53,6 +62,10 @@ export default function CitizenResult() {
           <p className="text-sm" style={{ color: '#5A7099' }}>
             Placa consultada: <span className="font-mono font-semibold" style={{ color: '#0F1F3D' }}>{plate}</span>
           </p>
+        </div>
+
+        <div className="mb-6">
+          <EvidenceReplay />
         </div>
 
         {/* Main comparendo card */}
@@ -152,7 +165,7 @@ export default function CitizenResult() {
                   style={{ backgroundColor: 'rgba(0,0,0,0.75)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}
                 >
                   <svg viewBox="0 0 16 16" className="w-3 h-3" fill="currentColor">
-                    <path d="M1.5 1h5a.5.5 0 010 1H2v4.5a.5.5 0 01-1 0v-5A.5.5 0 011.5 1zm10 0h3a.5.5 0 01.5.5v5a.5.5 0 01-1 0V2h-2.5a.5.5 0 010-1zM.5 15h5a.5.5 0 010-1H1v-4.5a.5.5 0 00-1 0v5a.5.5 0 00.5.5zm15 0h-5a.5.5 0 010-1H15v-4.5a.5.5 0 011 0v5a.5.5 0 01-.5.5z"/>
+                    <path d="M1.5 1h5a.5.5 0 010 1H2v4.5a.5.5 0 01-1 0v-5A.5.5 0 011.5 1zm10 0h3a.5.5 0 01.5.5v5a.5.5 0 01-1 0V2h-2.5a.5.5 0 010-1zM.5 15h5a.5.5 0 010-1H1v-4.5a.5.5 0 00-1 0v5a.5.5 0 00.5.5zm15 0h-5a.5.5 0 010-1H15v-4.5a.5.5 0 011 0v5a.5.5 0 01-.5.5z" />
                   </svg>
                   Ver en alta resolución
                 </button>
@@ -181,15 +194,15 @@ export default function CitizenResult() {
                   {downloaded ? (
                     <>
                       <svg viewBox="0 0 20 20" className="w-4 h-4" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                       Documento descargado
                     </>
                   ) : (
                     <>
                       <svg viewBox="0 0 20 20" className="w-4 h-4" fill="currentColor">
-                        <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z"/>
-                        <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z"/>
+                        <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
+                        <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
                       </svg>
                       Descargar PDF del comparendo
                     </>
@@ -210,8 +223,8 @@ export default function CitizenResult() {
             style={{ borderColor: '#C2CEDE', backgroundColor: '#F5F8FC' }}
           >
             <p className="text-xs" style={{ color: '#5A7099' }}>
-              ¿Desea impugnar este comparendo? Tiene 30 días hábiles desde la fecha de expedición.{' '}
-              <button className="underline" style={{ color: '#1A3A6B' }}>Ver proceso de impugnación.</button>
+              ¿Considera que este comparendo no es válido?{' '}
+              <button type="button" onClick={() => setShowAppeal(true)} className="font-semibold underline" style={{ color: '#1A3A6B' }}>Presentar apelación</button>
             </p>
             <button
               onClick={() => navigate('/ciudadano')}
@@ -240,7 +253,7 @@ export default function CitizenResult() {
             >
               Cerrar
               <svg viewBox="0 0 16 16" className="w-4 h-4" fill="currentColor">
-                <path d="M4.646 4.646a.5.5 0 01.708 0L8 7.293l2.646-2.647a.5.5 0 01.708.708L8.707 8l2.647 2.646a.5.5 0 01-.708.708L8 8.707l-2.646 2.647a.5.5 0 01-.708-.708L7.293 8 4.646 5.354a.5.5 0 010-.708z"/>
+                <path d="M4.646 4.646a.5.5 0 01.708 0L8 7.293l2.646-2.647a.5.5 0 01.708.708L8.707 8l2.647 2.646a.5.5 0 01-.708.708L8 8.707l-2.646 2.647a.5.5 0 01-.708-.708L7.293 8 4.646 5.354a.5.5 0 010-.708z" />
               </svg>
             </button>
             <img
@@ -256,6 +269,47 @@ export default function CitizenResult() {
               Fotografía certificada · SIFCA · {comparendo.numero}
             </p>
           </div>
+        </div>
+      )}
+
+      {showAppeal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="presentation">
+          <form onSubmit={handleAppealSubmit} className="w-full max-w-lg overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="appeal-title">
+            <div className="border-b border-slate-200 bg-[#F5F8FC] px-6 py-4">
+              <h2 id="appeal-title" className="text-base font-semibold text-[#0F1F3D]">Presentar apelación</h2>
+              <p className="mt-1 text-sm text-[#5A7099]">Comparendo {comparendo.numero}</p>
+            </div>
+            {appealSubmitted ? (
+              <div className="px-6 py-6" role="status">
+                <p className="font-semibold text-green-800">Solicitud registrada en esta demostración.</p>
+                <p className="mt-2 text-sm text-slate-600">En una versión conectada, el equipo responsable recibiría estos comentarios para su revisión.</p>
+                <div className="mt-5 flex justify-end">
+                  <button type="button" onClick={() => setShowAppeal(false)} className="rounded bg-[#1A3A6B] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0D2247]">Cerrar</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="space-y-2 px-6 py-5">
+                  <label htmlFor="appeal-comment" className="block text-sm font-medium text-slate-700">Explique por qué considera inválido el comparendo <span className="text-red-600">*</span></label>
+                  <textarea
+                    id="appeal-comment"
+                    value={appealComment}
+                    onChange={event => setAppealComment(event.target.value)}
+                    required
+                    minLength={10}
+                    rows={5}
+                    placeholder="Describa los hechos y cualquier información que ayude a revisar su solicitud."
+                    className="w-full resize-y rounded border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-blue-300"
+                  />
+                  <p className="text-xs text-slate-500">La explicación es obligatoria y debe tener al menos 10 caracteres.</p>
+                </div>
+                <div className="flex justify-end gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4">
+                  <button type="button" onClick={() => setShowAppeal(false)} className="rounded border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">Cancelar</button>
+                  <button type="submit" disabled={appealComment.trim().length < 10} className="rounded bg-[#1A3A6B] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0D2247] disabled:cursor-not-allowed disabled:opacity-50">Enviar apelación</button>
+                </div>
+              </>
+            )}
+          </form>
         </div>
       )}
 

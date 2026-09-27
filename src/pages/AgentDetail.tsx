@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { AgentHeader, EVENTS } from './AgentQueue';
+import EvidenceReplay from '../imports/EvidenceReplay';
 
 // ─── Screen 1.3 — Evidence Detail & Validation ────────────────────────────────
 export default function AgentDetail() {
@@ -9,6 +10,9 @@ export default function AgentDetail() {
   const ev = (state as any)?.event ?? EVENTS[0];
 
   const [plate, setPlate] = useState<string>(ev.plate);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectReason, setRejectReason] = useState('');
+  const [rejected, setRejected] = useState(false);
 
   function handleApprove(e: React.FormEvent) {
     e.preventDefault();
@@ -19,6 +23,12 @@ export default function AgentDetail() {
         comparendoNum: 'C-2026-' + ev.id.slice(-5),
       },
     });
+  }
+
+  function handleReject(e: React.FormEvent) {
+    e.preventDefault();
+    setRejected(true);
+    setShowRejectModal(false);
   }
 
   return (
@@ -37,7 +47,7 @@ export default function AgentDetail() {
             Bandeja de validación
           </button>
           <svg viewBox="0 0 16 16" className="w-3 h-3" fill="currentColor">
-            <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L10.293 8 4.646 2.354a.5.5 0 010-.708z"/>
+            <path fillRule="evenodd" d="M4.646 1.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L10.293 8 4.646 2.354a.5.5 0 010-.708z" />
           </svg>
           <span>{ev.id}</span>
         </nav>
@@ -55,12 +65,24 @@ export default function AgentDetail() {
           <div className="flex items-center gap-3">
             <span
               className="inline-flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-bold uppercase tracking-wide"
-              style={{ backgroundColor: '#FEF3C7', color: '#92400E', border: '1px solid #FCD34D' }}
+              style={rejected
+                ? { backgroundColor: '#FEE2E2', color: '#B91C1C', border: '1px solid #FECACA' }
+                : { backgroundColor: '#FEF3C7', color: '#92400E', border: '1px solid #FCD34D' }}
             >
-              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: '#D97706' }} />
-              Pendiente
+              <span className="w-1.5 h-1.5 rounded-full inline-block" style={{ backgroundColor: rejected ? '#DC2626' : '#D97706' }} />
+              {rejected ? 'Invalidada' : 'Pendiente'}
             </span>
           </div>
+        </div>
+
+        {rejected && (
+          <div role="status" className="mb-5 rounded border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+            Evento invalidado correctamente. Motivo registrado: {rejectReason}
+          </div>
+        )}
+
+        <div className="mb-6">
+          <EvidenceReplay />
         </div>
 
         {/* Two-column layout */}
@@ -177,13 +199,13 @@ export default function AgentDetail() {
                           backgroundColor:
                             ev.semaforo === color
                               ? color === 'ROJO' ? '#EF4444'
-                              : color === 'AMARILLO' ? '#F59E0B'
-                              : '#22C55E'
+                                : color === 'AMARILLO' ? '#F59E0B'
+                                  : '#22C55E'
                               : '#374151',
                           boxShadow: ev.semaforo === color
                             ? color === 'ROJO' ? '0 0 10px 3px rgba(239,68,68,0.5)'
-                            : color === 'AMARILLO' ? '0 0 10px 3px rgba(245,158,11,0.5)'
-                            : '0 0 10px 3px rgba(34,197,94,0.5)'
+                              : color === 'AMARILLO' ? '0 0 10px 3px rgba(245,158,11,0.5)'
+                                : '0 0 10px 3px rgba(34,197,94,0.5)'
                             : undefined,
                         }}
                       />
@@ -287,6 +309,7 @@ export default function AgentDetail() {
               {/* Approve button */}
               <button
                 type="submit"
+                disabled={rejected}
                 className="
                   w-full py-4 rounded-lg text-white font-semibold text-base
                   flex items-center justify-center gap-3
@@ -298,14 +321,50 @@ export default function AgentDetail() {
                 onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#15803D')}
               >
                 <svg viewBox="0 0 20 20" className="w-5 h-5" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
                 Aprobar y generar comparendo
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowRejectModal(true)}
+                disabled={rejected}
+                className="w-full rounded-lg border border-red-300 bg-white py-3 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Invalidar / rechazar evento
               </button>
             </div>
           </div>
         </form>
       </main>
+
+      {showRejectModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="presentation">
+          <form onSubmit={handleReject} className="w-full max-w-md overflow-hidden rounded-lg border border-slate-200 bg-white shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="reject-title">
+            <div className="bg-red-700 px-6 py-4">
+              <h2 id="reject-title" className="text-base font-semibold text-white">Confirmar invalidación</h2>
+              <p className="mt-1 text-sm text-red-100">El evento {ev.id} se marcará como inválido.</p>
+            </div>
+            <div className="space-y-2 px-6 py-5">
+              <label htmlFor="reject-reason" className="block text-sm font-medium text-slate-700">Motivo de rechazo <span className="text-red-600">*</span></label>
+              <textarea
+                id="reject-reason"
+                value={rejectReason}
+                onChange={event => setRejectReason(event.target.value)}
+                required
+                minLength={5}
+                rows={4}
+                placeholder="Indique por qué la evidencia no permite validar la infracción."
+                className="w-full resize-y rounded border border-slate-300 px-3 py-2 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-red-300"
+              />
+            </div>
+            <div className="flex justify-end gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4">
+              <button type="button" onClick={() => setShowRejectModal(false)} className="rounded border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">Cancelar</button>
+              <button type="submit" disabled={rejectReason.trim().length < 5} className="rounded bg-red-700 px-4 py-2 text-sm font-semibold text-white hover:bg-red-800 disabled:cursor-not-allowed disabled:opacity-50">Confirmar rechazo</button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
