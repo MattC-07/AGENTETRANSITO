@@ -1,0 +1,152 @@
+/* =====================================================================
+   SIFCA · LANDING — agregar al final de src/index.css
+   ===================================================================== */
+
+/* 1. Tokens nuevos (Tailwind v4 los fusiona con el @theme existente) */
+@theme {
+  --color-sifca-glow: #4f8bff; /* acento luminoso sobre navy */
+  --color-sifca-surface: #f5f8fc; /* fondo casi blanco para alternar secciones */
+  --color-sifca-deep: #0b1929; /* fondo profundo del hero */
+
+  /* Fondos suaves de los estados del semáforo (ya se usaban escritos a mano) */
+  --color-danger-soft: #fee2e2;
+  --color-warn-soft: #fef3c7;
+  --color-ok-soft: #dcfce7;
+}
+
+/* 2. Utilidades visuales de la landing */
+.landing-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--color-sifca-glow) 14%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--color-sifca-glow) 14%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 100%);
+}
+
+.landing :focus-visible,
+.sifca-ui :focus-visible {
+  outline: 2px solid var(--color-sifca-glow);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Aparición suave al hacer scroll (la activa useReveal) */
+.landing-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 400ms ease-out,
+    transform 400ms ease-out;
+}
+.landing-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* 3. Escena de la cámara del hero (ciclo de 7 s) */
+@keyframes landing-car {
+  from { transform: translateX(-100px); }
+  to { transform: translateX(480px); }
+}
+@keyframes landing-detect {
+  0%, 45% { opacity: 0; }
+  48%, 88% { opacity: 1; }
+  92%, 100% { opacity: 0; }
+}
+@keyframes landing-flash {
+  0%, 45% { opacity: 0; }
+  46.5% { opacity: 0.35; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes landing-scan {
+  from { transform: translateY(-20px); }
+  to { transform: translateY(320px); }
+}
+@keyframes landing-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+@keyframes landing-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+
+.landing-car { animation: landing-car 7s linear infinite; }
+.landing-detect { opacity: 0; animation: landing-detect 7s linear infinite; }
+.landing-flash { opacity: 0; animation: landing-flash 7s linear infinite; }
+.landing-scan { animation: landing-scan 5s linear infinite; }
+.landing-blink { animation: landing-blink 1.4s ease-in-out infinite; }
+.landing-glow { animation: landing-glow 2.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.landing) { scroll-behavior: auto; }
+  .landing-reveal { opacity: 1; transform: none; transition: none; }
+  .landing-car { animation: none; transform: translateX(262px); }
+  .landing-detect { animation: none; opacity: 1; }
+  .landing-flash, .landing-scan { animation: none; opacity: 0; }
+  .landing-blink, .landing-glow { animation: none; }
+}
+
+/* 4. Hero: entrada del título y brillo del degradado */
+@keyframes landing-rise {
+  from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+@keyframes landing-shimmer {
+  from { background-position: 0% 50%; }
+  to { background-position: 200% 50%; }
+}
+.landing-rise { animation: landing-rise 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.landing-shimmer { background-size: 200% auto; animation: landing-shimmer 8s linear infinite; }
+
+/* 5. Recorrido "Cómo funciona": escenas de cada paso */
+@keyframes landing-pop {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes landing-out {
+  to { opacity: 0; }
+}
+@keyframes landing-stamp {
+  from { opacity: 0; transform: rotate(-8deg) scale(1.8); }
+  to { opacity: 1; transform: rotate(-8deg) scale(1); }
+}
+@keyframes landing-press {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.94); }
+}
+@keyframes landing-cursor {
+  from { opacity: 0; transform: translate(70px, 60px); }
+  20% { opacity: 1; }
+  to { opacity: 1; transform: translate(0, 0); }
+}
+@keyframes landing-scan-x {
+  0%, 100% { transform: translateX(-8%); }
+  50% { transform: translateX(8%); }
+}
+@keyframes landing-caret {
+  50% { opacity: 0; }
+}
+@keyframes landing-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.landing-pop { animation: landing-pop 500ms ease-out both; }
+.landing-out { animation: landing-out 250ms ease-in forwards; }
+.landing-stamp { animation: landing-stamp 450ms cubic-bezier(0.3, 1.4, 0.5, 1) both; }
+.landing-press { animation: landing-press 300ms ease-in-out both; }
+.landing-cursor { animation: landing-cursor 900ms ease-out both; }
+.landing-scan-x { animation: landing-scan-x 2.4s ease-in-out infinite; }
+.landing-caret { animation: landing-caret 1s step-end infinite; }
+.landing-progress { transform-origin: left; animation: landing-progress linear forwards; }
+[data-paused="true"] .landing-progress { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-rise, .landing-shimmer, .landing-pop, .landing-stamp, .landing-press,
+  .landing-cursor, .landing-scan-x, .landing-caret, .landing-progress { animation: none; }
+  .landing-out { animation: none; opacity: 0; }
+  .landing-stamp { transform: rotate(-8deg); }
+}
+
+html:has(.landing) { scroll-behavior: smooth; }
