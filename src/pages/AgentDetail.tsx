@@ -13,16 +13,25 @@ export default function AgentDetail() {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectReason, setRejectReason] = useState('');
   const [rejected, setRejected] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [generating, setGenerating] = useState(false);
 
+  const comparendoNum = 'C-2026-' + ev.id.slice(-5);
+
+  // Approve just opens the confirmation pop-up; nothing is generated yet.
   function handleApprove(e: React.FormEvent) {
     e.preventDefault();
-    navigate('/agente/confirmacion', {
-      state: {
-        event: ev,
-        plate,
-        comparendoNum: 'C-2026-' + ev.id.slice(-5),
-      },
-    });
+    setShowConfirm(true);
+  }
+
+  // Confirm → show spinner, simulate backend, then go to the result screen.
+  function handleGenerate() {
+    setGenerating(true);
+    setTimeout(() => {
+      navigate('/agente/confirmacion', {
+        state: { event: ev, plate, comparendoNum },
+      });
+    }, 1600);
   }
 
   function handleReject(e: React.FormEvent) {
@@ -335,6 +344,78 @@ export default function AgentDetail() {
           </div>
         </form>
       </main>
+
+      {/* ── Confirm-generate pop-up (with loading spinner) ── */}
+      {showConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="presentation">
+          <div
+            className="w-full max-w-md overflow-hidden rounded-lg bg-white shadow-2xl"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="confirm-title"
+          >
+            <div className="px-6 py-4 border-b" style={{ backgroundColor: '#0D2247', borderColor: '#1A3A6B' }}>
+              <h2 id="confirm-title" className="text-base font-semibold text-white">
+                {generating ? 'Generando comparendo…' : 'Confirmar generación de comparendo'}
+              </h2>
+              <p className="mt-1 text-sm text-blue-200">
+                {generating ? 'Registrando la infracción en el sistema. No cierre esta ventana.' : 'Verifique los datos antes de expedir el comparendo. Esta acción es definitiva.'}
+              </p>
+            </div>
+
+            {generating ? (
+              <div className="flex flex-col items-center justify-center gap-4 px-6 py-12">
+                <span
+                  className="inline-block h-10 w-10 animate-spin rounded-full border-4 border-slate-200"
+                  style={{ borderTopColor: '#1A3A6B' }}
+                  aria-hidden="true"
+                />
+                <p className="text-sm font-medium" style={{ color: '#5A7099' }}>Procesando comparendo {comparendoNum}…</p>
+              </div>
+            ) : (
+              <>
+                <div className="px-6 py-5">
+                  <dl className="space-y-3">
+                    {[
+                      { label: 'Comparendo', value: comparendoNum },
+                      { label: 'Placa', value: plate },
+                      { label: 'Propietario', value: ev.runt.propietario },
+                      { label: 'Infracción', value: ev.tipo },
+                      { label: 'Fecha y hora', value: `${ev.fecha} · ${ev.hora}` },
+                      { label: 'Valor', value: '15 SMDLV — $548.500 COP' },
+                    ].map(({ label, value }) => (
+                      <div key={label} className="flex items-start justify-between gap-4">
+                        <dt className="text-sm flex-none" style={{ color: '#5A7099', width: 130 }}>{label}</dt>
+                        <dd className="text-sm font-semibold text-right" style={{ color: '#0F1F3D' }}>{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+                <div className="flex justify-end gap-3 border-t px-6 py-4" style={{ borderColor: '#E2E8F0', backgroundColor: '#F5F8FC' }}>
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirm(false)}
+                    className="rounded border px-4 py-2 text-sm font-medium transition-colors hover:bg-white"
+                    style={{ color: '#5A7099', borderColor: '#C2CEDE' }}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleGenerate}
+                    className="rounded px-4 py-2 text-sm font-semibold text-white transition-colors"
+                    style={{ backgroundColor: '#15803D' }}
+                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#166534')}
+                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#15803D')}
+                  >
+                    Confirmar y generar
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       {showRejectModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" role="presentation">
