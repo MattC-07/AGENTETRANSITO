@@ -28,7 +28,7 @@ Sigue estos pasos para levantar el entorno de desarrollo en tu computadora:
 ### 1. Clonar el repositorio
 \`\`\`bash
 git clone https://github.com/MattC-07/dashboard-transito-fotomultas.git
-cd dashboard-transito-fotomultas/frontend
+cd dashboard-transito-fotomultas
 \`\`\`
 
 ### 2. Instalar las dependencias
