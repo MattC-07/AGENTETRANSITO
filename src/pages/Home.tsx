@@ -6,31 +6,36 @@ export function SifcaHeader() {
   return (
     <header
       style={{ height: 64, backgroundColor: '#0D2247' }}
-      className="flex-none flex items-center px-20 border-b border-white/10"
+      className="flex-none flex items-center px-20 border-b border-white/10" // <-- Regresamos a px-20 aquí
     >
       <button
         onClick={() => navigate('/')}
         className="flex items-center gap-3 group"
       >
         {/* Logo mark */}
-        <div className="flex items-center gap-2">
-          <div
-            style={{ width: 32, height: 32, backgroundColor: '#2558A8' }}
-            className="rounded flex items-center justify-center flex-none"
-          >
-            <svg viewBox="0 0 20 20" className="w-4 h-4 text-white" fill="currentColor">
-              <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4zm0 2a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4z"/>
-            </svg>
-          </div>
-          <div>
-            <span className="text-white font-bold text-base tracking-wide leading-none">SIFCA</span>
-            <div className="text-blue-300 text-xs leading-none mt-0.5">Secretaría de Movilidad · Apartadó</div>
-          </div>
+        <div
+          style={{ width: 36, height: 36, backgroundColor: '#2558A8' }}
+          className="rounded-lg flex items-center justify-center flex-none"
+        >
+          <svg viewBox="0 0 20 20" className="w-5 h-5 text-white" fill="currentColor">
+            <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4zm0 2a4 4 0 100 8 4 4 0 000-8zm0 2a2 2 0 110 4 2 2 0 010-4z"/>
+          </svg>
+        </div>
+
+        {/* Text content */}
+        <div className="flex flex-col items-start gap-y-0.5">
+          <span className="text-white font-bold text-sm tracking-wide leading-tight">
+            SIFCA
+          </span>
+          <span className="text-blue-300/80 text-xs font-medium leading-tight">
+            Secretaría de Movilidad · Apartadó
+          </span>
         </div>
       </button>
     </header>
   );
 }
+
 
 // ─── Screen 2.1 — Landing / Access Selector ──────────────────────────────────
 export default function Home() {
